@@ -15,8 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
-
 document.getElementById("generateReply").addEventListener("click", () => {
   const chatHistory = document.getElementById("chatHistory").value;
   const input = document.getElementById("inputMessage").value;
@@ -34,7 +32,7 @@ document.getElementById("generateReply").addEventListener("click", () => {
       intent
     },
     (response) => {
-      document.getElementById("replyResult").innerText =
+      document.getElementById("replyResult").value =
         "LibreTalk suggests: " + response.reply;
     }
   );
@@ -42,9 +40,13 @@ document.getElementById("generateReply").addEventListener("click", () => {
 
 document.getElementById("copyReply").addEventListener("click", () => {
   const replyText = document.getElementById("replyResult").value;
-  navigator.clipboard.writeText(replyText).then(() => {
-    alert("Copied to clipboard!");
-  }).catch(err => {
-    alert("Copy failed: " + err);
-  });
+  if (replyText) {
+    navigator.clipboard.writeText(replyText).then(() => {
+      alert("Copied to clipboard!");
+    }).catch(err => {
+      alert("Copy failed: " + err);
+    });
+  } else {
+    alert("No reply to copy!");
+  }
 });
