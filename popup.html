@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LibreTalk</title>
+</head>
+<body>
+  <h2>LibreTalk Settings</h2>
+  <label>API Key:</label>
+  <input type="password" id="apiKey" placeholder="Enter your API Key"><br><br>
+
+  <label>Model:</label>
+  <select id="model">
+    <option value="gpt-4o-mini">gpt-4o-mini</option>
+    <option value="gpt-4o">gpt-4o</option>
+  </select><br><br>
+
+  <button id="saveConfig">Save Config</button>
+  <p id="status"></p>
+
+  <div id="chatSection" style="display:none;">
+    <h3>Generate High-EQ Reply</h3>
+    <label>Relation:</label><br>
+    <input type="text" id="relation" placeholder="Enter relation:"><br><br>
+
+    <label>Style</label><br>
+    <input type="text" id="style" placeholder="Enter response style:"><br><br>
+
+    <label>Chat History:</label><br>
+    <textarea id="chatHistory" rows="3" cols="30"></textarea><br><br>
+
+    <label>Message from the other person:</label><br>
+    <input type="text" id="inputMessage" placeholder="Enter their message"><br><br>
+
+    <label>Your Intent:</label><br>
+    <input type="text" id="intent" placeholder="Enter your intent"><br><br>
+
+    <button id="generateReply">Generate Reply</button>
+    <textarea id="replyResult" rows="4" cols="40" readonly></textarea><br>
+    <button id="copyReply">Copy</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

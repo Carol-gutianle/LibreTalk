@@ -53,9 +53,9 @@ It enables you to **express yourself freely** while keeping your words **gentle,
 ---
 
 ## 📸 Screenshots
-![API Setting](api_setting.png)
+![API Setting](./assets/api_setting.png)
 
-![Case](Case5_Lend.jpg)
+![Case](./assets/Case5_Lend.jpg)
 
 
 ---

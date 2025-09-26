@@ -54,9 +54,9 @@
 ---
 
 ## 📸 截图
-![API Setting](api_setting.png)
+![API Setting](./assets/api_setting.png)
 
-![Case](Case3_Parents.jpg)
+![Case](./assets/Case3_Parents.jpg)
 
 ---
 
