@@ -48,7 +48,7 @@ What I want to say:
           }
         })
         .catch(err => {
-          sendResponse({ reply: "Wrong request: " + err.message +  });
+          sendResponse({ reply: "Wrong request: " + err.message });
         });
     });
 
