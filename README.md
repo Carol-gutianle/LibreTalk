@@ -3,7 +3,7 @@
 **LibreTalk — Speak Freely, Connect Kindly**  
 *自由说话，善意沟通*
 
-[![中文 README](https://img.shields.io/badge/README-中文-ff4d4f?style=flat-square)](./README_zh.md)
+[![中文 README](https://img.shields.io/badge/README-中文-ff4d4f?style=flat-square)](./README_ZH.md)
 
 
 ---
