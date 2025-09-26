@@ -3,26 +3,45 @@ function addEQButton() {
 
   const btn = document.createElement("button");
   btn.id = "libretalk-btn";
-  btn.innerText = "LibreTalk";
+  btn.innerHTML = `
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span style="margin-left: 8px;">LibreTalk</span>
+  `;
 
-  btn.style.position = "fixed";
-  btn.style.bottom = "20px";
-  btn.style.right = "20px";
-  btn.style.zIndex = "2147483647";
-  btn.style.padding = "10px 16px";
-  btn.style.background = "#BDE0FE";
-  btn.style.color = "white";
-  btn.style.fontWeight = "bold";
-  btn.style.fontSize = "14px";
-  btn.style.border = "none";
-  btn.style.borderRadius = "8px";
-  btn.style.cursor = "pointer";
-  btn.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+  btn.style.cssText = `
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 2147483647;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    backdrop-filter: blur(20px);
+    user-select: none;
+  `;
 
-  btn.addEventListener("mouseenter", () => (btn.style.background = "#A2D2FF"));
-  btn.addEventListener("mouseleave", () => (btn.style.background = "#BDE0FE"));
+  btn.addEventListener("mouseenter", () => {
+    btn.style.transform = "translateY(-2px) scale(1.05)";
+    btn.style.boxShadow = "0 12px 40px rgba(102, 126, 234, 0.5)";
+  });
 
-  // 点击按钮 → 打开面板
+  btn.addEventListener("mouseleave", () => {
+    btn.style.transform = "translateY(0) scale(1)";
+    btn.style.boxShadow = "0 8px 32px rgba(102, 126, 234, 0.4)";
+  });
+
   btn.addEventListener("click", () => {
     if (document.getElementById("libretalk-panel")) {
       document.getElementById("libretalk-panel").style.display = "block";
@@ -31,40 +50,236 @@ function addEQButton() {
 
     const panel = document.createElement("div");
     panel.id = "libretalk-panel";
-    panel.style.position = "fixed";
-    panel.style.bottom = "70px";
-    panel.style.right = "20px";
-    panel.style.width = "320px";
-    panel.style.padding = "15px";
-    panel.style.background = "#ffffff";
-    panel.style.border = "1px solid #ccc";
-    panel.style.borderRadius = "10px";
-    panel.style.boxShadow = "0 4px 12px rgba(0,0,0,0.2)";
-    panel.style.zIndex = "10000";
-    panel.style.fontFamily = "Arial, sans-serif";
-    panel.style.fontSize = "14px";
-    panel.style.lineHeight = "1.5";
+    panel.style.cssText = `
+      position: fixed;
+      bottom: 110px;
+      right: 30px;
+      width: 400px;
+      max-height: 80vh;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      z-index: 10000;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      overflow-y: auto;
+      animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 #f1f5f9;
+    `;
+
+    // 添加动画样式
+    const style = document.createElement("style");
+    style.textContent = `
+      @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      .modern-input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: white;
+        box-sizing: border-box;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+      .modern-input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+      .modern-input-area {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: white;
+        box-sizing: border-box;
+        font-family: inherit;
+        resize: vertical;
+        min-height: 45px;
+        max-height: 120px;
+        overflow-y: auto;
+      }
+      .modern-input-area:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+      .modern-textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: white;
+        resize: vertical;
+        min-height: 80px;
+        box-sizing: border-box;
+        font-family: inherit;
+      }
+      .modern-textarea:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+      .modern-btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-family: inherit;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+      }
+      .btn-secondary {
+        background: #f1f5f9;
+        color: #64748b;
+        border: 1px solid #e2e8f0;
+      }
+      .btn-secondary:hover {
+        background: #e2e8f0;
+        transform: translateY(-1px);
+      }
+      .btn-danger {
+        background: #fee2e2;
+        color: #dc2626;
+        border: 1px solid #fecaca;
+      }
+      .btn-danger:hover {
+        background: #fecaca;
+        transform: translateY(-1px);
+      }
+      
+      /* 自定义滚动条样式 */
+      #libretalk-panel::-webkit-scrollbar {
+        width: 6px;
+      }
+      
+      #libretalk-panel::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 3px;
+      }
+      
+      #libretalk-panel::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 3px;
+      }
+      
+      #libretalk-panel::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+    `;
+    document.head.appendChild(style);
 
     panel.innerHTML = `
-      <h3 style="margin-top:0; color:#ff4d6d;">LibreTalk</h3>
-      <label>Relation:</label><br>
-      <input type="text" id="libretalk-relation" style="width:100%; margin-bottom:10px;"><br>
-      <label>Style:</label><br>
-      <input type="text" id="libretalk-style" style="width:100%; margin-bottom:10px;"><br>
-      <label>Intent:</label><br>
-      <input type="text" id="libretalk-intent" style="width:100%; margin-bottom:10px;"><br>
-      <label>Chat History:</label><br>
-      <textarea id="libretalk-history" rows="3" style="width:100%; margin-bottom:10px;"></textarea><br>
-      <label>Message:</label><br>
-      <input type="text" id="libretalk-input" style="width:100%; margin-bottom:10px;"><br>
-      <button id="libretalk-submit" style="background:#4CAF50;color:white;padding:6px 12px;border:none;border-radius:6px;cursor:pointer;">Generate Reply</button>
-      <button id="libretalk-close" style="margin-left:10px;padding:6px 12px;border:1px solid #ccc;border-radius:6px;background:#FFAFCC;cursor:pointer;">Close</button>
-      <button id="libretalk-clear" style="margin-left:10px;padding:6px 12px;border:1px solid #eee;border-radius:6px;background:#A2D2FF;cursor:pointer;">Clear</button>
-      <p id="libretalk-result" style="margin-top:10px; white-space:pre-wrap; color:#333;"></p>
+      <div style="padding: 24px;">
+        <!-- Header -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+          <div style="display: flex; align-items: center;">
+            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: #1e293b;">LibreTalk</h3>
+              <p style="margin: 0; font-size: 13px; color: #64748b;">AI Communication Assistant</p>
+            </div>
+          </div>
+          <button id="libretalk-close" class="modern-btn btn-secondary" style="width: auto; padding: 8px 12px; font-size: 12px;">✕</button>
+        </div>
+
+        <!-- Form Fields -->
+        <div style="display: grid; gap: 16px;">
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">👤 Relationship</label>
+            <input type="text" id="libretalk-relation" class="modern-input" placeholder="Friend, colleague, family...">
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">✨ Style</label>
+            <input type="text" id="libretalk-style" class="modern-input" placeholder="Casual, formal, friendly...">
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">🎯 Your Intent</label>
+            <textarea id="libretalk-intent" class="modern-input-area" placeholder="What do you want to express?"></textarea>
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">📜 Chat History (Optional)</label>
+            <textarea id="libretalk-history" class="modern-textarea" placeholder="Previous conversation context..."></textarea>
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">💬 Last Message</label>
+            <textarea id="libretalk-input" class="modern-input-area" placeholder="What did they say?"></textarea>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 12px; margin-top: 20px;">
+          <button id="libretalk-submit" class="modern-btn btn-primary" style="flex: 1;">
+            Generate Reply
+          </button>
+          <button id="libretalk-clear" class="modern-btn btn-secondary" style="flex: 0 0 auto;">
+            Clear
+          </button>
+        </div>
+
+        <!-- Result Area -->
+        <div id="libretalk-result-container" style="margin-top: 20px; display: none;">
+          <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 12px; padding: 16px; border-left: 4px solid #0ea5e9;">
+            <div style="display: flex; align-items: center; justify-content: between; margin-bottom: 8px;">
+              <span style="font-size: 13px; font-weight: 600; color: #0369a1;">💡 LibreTalk Suggestion</span>
+              <button id="libretalk-copy" class="modern-btn btn-secondary" style="margin-left: auto; font-size: 12px; padding: 6px 12px;">📋 Copy</button>
+            </div>
+            <p id="libretalk-result" style="margin: 0; color: #0c4a6e; line-height: 1.6; white-space: pre-wrap; max-height: 200px; overflow-y: auto; padding: 8px; background: rgba(255,255,255,0.7); border-radius: 8px;"></p>
+          </div>
+        </div>
+      </div>
     `;
 
     document.body.appendChild(panel);
 
+    // 调整面板位置避免超出屏幕
+    const adjustPanelPosition = () => {
+      const panelRect = panel.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      
+      if (panelRect.bottom > viewportHeight) {
+        panel.style.bottom = "20px";
+        panel.style.top = "auto";
+      }
+      
+      if (panelRect.top < 0) {
+        panel.style.top = "20px";
+        panel.style.bottom = "auto";
+      }
+    };
+
+    // 初始位置调整
+    setTimeout(adjustPanelPosition, 50);
+
+    // Event Listeners
     document.getElementById("libretalk-submit").addEventListener("click", () => {
       const relation = document.getElementById("libretalk-relation").value;
       const style = document.getElementById("libretalk-style").value;
@@ -72,14 +287,32 @@ function addEQButton() {
       const input = document.getElementById("libretalk-input").value;
       const history = document.getElementById("libretalk-history").value;
 
-      if (!input) {
-        alert("Please enter the message!");
+      if (!input.trim()) {
+        alert("Please enter their message!");
         return;
       }
 
-      chrome.storage.local.get(["apiKey", "model"], (data) => {
+      // Show loading state
+      const submitBtn = document.getElementById("libretalk-submit");
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = "Generating...";
+      submitBtn.style.opacity = "0.7";
+      submitBtn.disabled = true;
+
+      chrome.storage.local.get(["apiKey", "baseUrl"], (data) => {
         if (!data.apiKey) {
           alert("Please set API Key in extension popup first!");
+          submitBtn.innerHTML = originalText;
+          submitBtn.style.opacity = "1";
+          submitBtn.disabled = false;
+          return;
+        }
+        
+        if (!data.baseUrl) {
+          alert("Please set Base URL in extension popup first!");
+          submitBtn.innerHTML = originalText;
+          submitBtn.style.opacity = "1";
+          submitBtn.disabled = false;
           return;
         }
 
@@ -90,32 +323,82 @@ function addEQButton() {
             style,
             intent,
             input,
-            chatHistory: history,
-            apiKey: data.apiKey,
-            model: data.model || "gpt-4o-mini",
+            chatHistory: history
           },
           (response) => {
-            document.getElementById("libretalk-result").innerText =
-              response && response.reply
-                ? "LibreTalk Suggests:\n\n" + response.reply
-                : "No response received. Check background.js logs.";
+            // Reset button
+            submitBtn.innerHTML = originalText;
+            submitBtn.style.opacity = "1";
+            submitBtn.disabled = false;
+
+            const resultContainer = document.getElementById("libretalk-result-container");
+            const result = document.getElementById("libretalk-result");
+            
+            if (response && response.reply) {
+              result.textContent = response.reply;
+              resultContainer.style.display = "block";
+              
+              // 添加复制按钮事件监听器
+              const copyBtn = document.getElementById("libretalk-copy");
+              copyBtn.addEventListener("click", () => {
+                navigator.clipboard.writeText(response.reply).then(() => {
+                  const originalText = copyBtn.innerHTML;
+                  copyBtn.innerHTML = "✅ Copied!";
+                  setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                  }, 2000);
+                }).catch(err => {
+                  alert("Copy failed: " + err);
+                });
+              });
+              
+              // 确保结果可见 - 滚动面板而不是页面
+              setTimeout(() => {
+                panel.scrollTop = panel.scrollHeight;
+                adjustPanelPosition(); // 重新调整位置
+              }, 100);
+            } else {
+              result.textContent = "No response received. Please check your settings.";
+              resultContainer.style.display = "block";
+              setTimeout(() => {
+                panel.scrollTop = panel.scrollHeight;
+                adjustPanelPosition(); // 重新调整位置
+              }, 100);
+            }
           }
         );
       });
     });
 
     document.getElementById("libretalk-close").addEventListener("click", () => {
-      panel.style.display = "none";
+      panel.style.animation = "slideDown 0.2s ease-in-out";
+      setTimeout(() => {
+        panel.style.display = "none";
+      }, 200);
     });
 
     document.getElementById("libretalk-clear").addEventListener("click", () => {
-    document.getElementById("libretalk-relation").value = "";
-    document.getElementById("libretalk-style").value = "";
-    document.getElementById("libretalk-intent").value = "";
-    document.getElementById("libretalk-history").value = "";
-    document.getElementById("libretalk-input").value = "";
-    document.getElementById("libretalk-result").innerText = "";
+      document.getElementById("libretalk-relation").value = "";
+      document.getElementById("libretalk-style").value = "";
+      document.getElementById("libretalk-intent").value = "";
+      document.getElementById("libretalk-history").value = "";
+      document.getElementById("libretalk-input").value = "";
+      document.getElementById("libretalk-result").textContent = "";
+      document.getElementById("libretalk-result-container").style.display = "none";
+      
+      // 清空后滚动到顶部
+      panel.scrollTop = 0;
     });
+
+    // Add slide down animation
+    const slideDownStyle = document.createElement("style");
+    slideDownStyle.textContent = `
+      @keyframes slideDown {
+        from { opacity: 1; transform: translateY(0) scale(1); }
+        to { opacity: 0; transform: translateY(20px) scale(0.95); }
+      }
+    `;
+    document.head.appendChild(slideDownStyle);
   });
 
   document.body.appendChild(btn);
