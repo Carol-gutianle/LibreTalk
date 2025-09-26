@@ -55,9 +55,9 @@
 ---
 
 ## 📸 截图
-![API Setting](./assets/api_setting.png)
+<img src="./assets/api_setting.png" alt="API Setting" width="400">
+<img src="./assets/case1.png" alt="Case" width="400">
 
-![Case](./assets/case1.png)
 
 ---
 
