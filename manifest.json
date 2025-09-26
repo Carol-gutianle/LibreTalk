@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "LibreTalk",
-  "version": "1.0",
+  "version": "2.0",
   "description": "High-EQ Reply Generator",
   "permissions": ["storage", "activeTab", "scripting"],
   "action": {
