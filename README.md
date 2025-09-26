@@ -53,7 +53,7 @@ It enables you to **express yourself freely** while keeping your words **gentle,
 ---
 
 ## 📸 Screenshots
-![API Setting](./assets/api_setting.png)
+![API Setting](./assets/api_setting.jpg)
 
 ![Case](./assets/Case5_Lend.jpg)
 
