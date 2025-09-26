@@ -37,6 +37,7 @@ It enables you to **express yourself freely** while keeping your words **gentle,
 
 ## 💡 Usage
 1. On the first run, launch the **LibreTalk** extension:  
+   - Enter your **Base Url** (only required once; it will be automatically loaded when Chrome restarts, no need to re-enter).  
    - Enter your **API Key** (only required once; it will be automatically loaded when Chrome restarts, no need to re-enter).  
    - Select the **Model**.  
    - Click **Save Config** to store settings.  
