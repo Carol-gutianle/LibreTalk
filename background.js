@@ -1,6 +1,6 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "generateReply") {
-    chrome.storage.local.get(["apiKey", "model"], ({ apiKey, model }) => {
+    chrome.storage.local.get(["apiKey", "model", "baseUrl"], ({ apiKey, model, baseUrl }) => {
       if (!apiKey) {
         sendResponse({ reply: "API Key is missing. Please go to the extension popup page and save it first." });
         return;
@@ -23,7 +23,7 @@ What I want to say:
 "${request.intent}"
 `;
 
-      fetch("http://35.220.164.252:3888/v1/chat/completions", {
+      fetch(`${baseUrl}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -48,7 +48,7 @@ What I want to say:
           }
         })
         .catch(err => {
-          sendResponse({ reply: "Wrong request: " + err.message });
+          sendResponse({ reply: "Wrong request: " + err.message +  });
         });
     });
 

@@ -1,18 +1,20 @@
 document.getElementById("saveConfig").addEventListener("click", () => {
+  const baseUrl = document.getElementById("baseUrl").value;
   const apiKey = document.getElementById("apiKey").value;
   const model = document.getElementById("model").value;
-
-  chrome.storage.local.set({ apiKey, model }, () => {
+  chrome.storage.local.set({ baseUrl, apiKey, model }, () => {
     document.getElementById("status").innerText = "Config saved!";
   });
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  chrome.storage.local.get(["apiKey", "model"], (data) => {
+  chrome.storage.local.get(["baseUrl", "apiKey", "model"], (data) => {
+    if (data.baseUrl) document.getElementById("baseUrl").value = data.baseUrl;
     if (data.apiKey) document.getElementById("apiKey").value = data.apiKey;
     if (data.model) document.getElementById("model").value = data.model;
   });
 });
+
 
 
 document.getElementById("generateReply").addEventListener("click", () => {

@@ -46,7 +46,7 @@ function addEQButton() {
     panel.style.lineHeight = "1.5";
 
     panel.innerHTML = `
-      <h3 style="margin-top:0; color:#ff4d6d;">libretalk Reply</h3>
+      <h3 style="margin-top:0; color:#ff4d6d;">LibreTalk</h3>
       <label>Relation:</label><br>
       <input type="text" id="libretalk-relation" style="width:100%; margin-bottom:10px;"><br>
       <label>Style:</label><br>

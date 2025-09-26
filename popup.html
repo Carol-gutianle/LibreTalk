@@ -1,21 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <style>
+    body {
+      width: 320px;   /* 控制整个 popup 的宽度 */
+      padding: 12px;
+      font-family: Arial, sans-serif;
+    }
+
+    input, select {
+      width: 100%;    /* 输入框和下拉框填满容器 */
+      box-sizing: border-box;
+      padding: 6px;
+      margin-top: 4px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 6px;
+      background-color: #4285f4;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+  </style>
   <title>LibreTalk</title>
 </head>
 <body>
-  <h2>LibreTalk Settings</h2>
-  <label>API Key:</label>
-  <input type="password" id="apiKey" placeholder="Enter your API Key"><br><br>
+  <h2 style="margin-bottom: 10px; font-family: Arial, sans-serif;">LibreTalk Settings</h2>
 
-  <label>Model:</label>
-  <select id="model">
-    <option value="gpt-4o-mini">gpt-4o-mini</option>
-    <option value="gpt-4o">gpt-4o</option>
-  </select><br><br>
+  <div style="display: flex; flex-direction: column; gap: 12px; font-family: Arial, sans-serif;">
 
-  <button id="saveConfig">Save Config</button>
-  <p id="status"></p>
+    <!-- Base URL -->
+    <label for="baseUrl"><b>Base URL:</b></label>
+    <input type="text" id="baseUrl" placeholder="https://api.openai.com/v1" style="padding: 6px; border-radius: 4px; border: 1px solid #ccc;">
+
+    <!-- API Key -->
+    <label for="apiKey"><b>API Key:</b></label>
+    <input type="password" id="apiKey" placeholder="Enter your API Key" style="padding: 6px; border-radius: 4px; border: 1px solid #ccc;">
+
+    <!-- Model -->
+    <label for="model"><b>Model:</b></label>
+    <select id="model" style="padding: 6px; border-radius: 4px; border: 1px solid #ccc;">
+      <option value="gpt-4o-mini">gpt-4o-mini</option>
+      <option value="gpt-4o">gpt-4o</option>
+    </select>
+
+    <!-- Save Button -->
+    <button id="saveConfig" style="margin-top: 10px; padding: 8px; border-radius: 6px; border: none; background-color: #4285f4; color: white; font-weight: bold; cursor: pointer;">
+      Save Config
+    </button>
+
+    <!-- Status -->
+    <p id="status" style="margin-top: 8px; font-size: 0.9em; color: green;"></p>
+  </div>
+
 
   <div id="chatSection" style="display:none;">
     <h3>Generate High-EQ Reply</h3>
