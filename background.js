@@ -6,6 +6,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         return;
       }
 
+      if (!baseUrl) {
+        sendResponse({ reply: "Base URL is missing. Please set it in the extension popup first." });
+        return;
+      }
+
       const prompt = `
 Style:
 ${request.style}
@@ -32,7 +37,7 @@ What I want to say:
         body: JSON.stringify({
           model: model || "gpt-4o-mini",
           messages: [
-            { role: "system", content: "You are LibreTalk, an expert in emotionally intelligent communication.   Your task is to help the user craft replies that are natural, sincere, and considerate.   The reply should:  (1) Express the user’s intent clearly. (2) Maintain kindness, empathy, and respect, regardless of context.  (3) Adjust tone based on the relationship and style specified.  (4) Avoid overly rigid politeness while ensuring the message does not sound harsh or offensive. Always output the final reply text directly, without extra commentary." },
+            { role: "system", content: "You are LibreTalk, an expert in emotionally intelligent communication.   Your task is to help the user craft replies that are natural, sincere, and considerate.   The reply should:  (1) Express the user's intent clearly. (2) Maintain kindness, empathy, and respect, regardless of context.  (3) Adjust tone based on the relationship and style specified.  (4) Avoid overly rigid politeness while ensuring the message does not sound harsh or offensive. Always output the final reply text directly, without extra commentary." },
             { role: "user", content: prompt }
           ],
           max_tokens: 1024,
