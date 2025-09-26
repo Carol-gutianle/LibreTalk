@@ -97,7 +97,7 @@ function addEQButton() {
           (response) => {
             document.getElementById("libretalk-result").innerText =
               response && response.reply
-                ? "libretalk Suggests:\n\n" + response.reply
+                ? "LibreTalk Suggests:\n\n" + response.reply
                 : "No response received. Check background.js logs.";
           }
         );

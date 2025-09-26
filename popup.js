@@ -35,7 +35,7 @@ document.getElementById("generateReply").addEventListener("click", () => {
     },
     (response) => {
       document.getElementById("replyResult").innerText =
-        "EQWoman suggests: " + response.reply;
+        "LibreTalk suggests: " + response.reply;
     }
   );
 });
