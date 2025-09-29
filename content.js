@@ -43,14 +43,15 @@ function addEQButton() {
   });
 
   btn.addEventListener("click", () => {
-    if (document.getElementById("libretalk-panel")) {
-      document.getElementById("libretalk-panel").style.display = "block";
+    const panel = document.getElementById("libretalk-panel");
+    if (panel) {
+      panel.style.display = panel.style.display === "none" ? "block" : "none";
       return;
     }
 
-    const panel = document.createElement("div");
-    panel.id = "libretalk-panel";
-    panel.style.cssText = `
+    const panelEl = document.createElement("div");
+    panelEl.id = "libretalk-panel";
+    panelEl.style.cssText = `
       position: fixed;
       bottom: 110px;
       right: 30px;
@@ -69,7 +70,6 @@ function addEQButton() {
       scrollbar-color: #cbd5e1 #f1f5f9;
     `;
 
-    // 添加动画样式
     const style = document.createElement("style");
     style.textContent = `
       @keyframes slideUp {
@@ -167,29 +167,14 @@ function addEQButton() {
         background: #fecaca;
         transform: translateY(-1px);
       }
-      
-      /* 自定义滚动条样式 */
-      #libretalk-panel::-webkit-scrollbar {
-        width: 6px;
-      }
-      
-      #libretalk-panel::-webkit-scrollbar-track {
-        background: #f1f5f9;
-        border-radius: 3px;
-      }
-      
-      #libretalk-panel::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 3px;
-      }
-      
-      #libretalk-panel::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
-      }
+      #libretalk-panel::-webkit-scrollbar { width: 6px; }
+      #libretalk-panel::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 3px; }
+      #libretalk-panel::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+      #libretalk-panel::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     `;
     document.head.appendChild(style);
 
-    panel.innerHTML = `
+    panelEl.innerHTML = `
       <div style="padding: 24px;">
         <!-- Header -->
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
@@ -213,22 +198,18 @@ function addEQButton() {
             <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">👤 Relationship</label>
             <input type="text" id="libretalk-relation" class="modern-input" placeholder="Friend, colleague, family...">
           </div>
-
           <div>
             <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">✨ Style</label>
             <input type="text" id="libretalk-style" class="modern-input" placeholder="Casual, formal, friendly...">
           </div>
-
           <div>
             <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">🎯 Your Intent</label>
             <textarea id="libretalk-intent" class="modern-input-area" placeholder="What do you want to express?"></textarea>
           </div>
-
           <div>
             <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">📜 Chat History (Optional)</label>
             <textarea id="libretalk-history" class="modern-textarea" placeholder="Previous conversation context..."></textarea>
           </div>
-
           <div>
             <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">💬 Last Message</label>
             <textarea id="libretalk-input" class="modern-input-area" placeholder="What did they say?"></textarea>
@@ -237,12 +218,8 @@ function addEQButton() {
 
         <!-- Action Buttons -->
         <div style="display: flex; gap: 12px; margin-top: 20px;">
-          <button id="libretalk-submit" class="modern-btn btn-primary" style="flex: 1;">
-            Generate Reply
-          </button>
-          <button id="libretalk-clear" class="modern-btn btn-secondary" style="flex: 0 0 auto;">
-            Clear
-          </button>
+          <button id="libretalk-submit" class="modern-btn btn-primary" style="flex: 1;">Generate Reply</button>
+          <button id="libretalk-clear" class="modern-btn btn-secondary" style="flex: 0 0 auto;">Clear</button>
         </div>
 
         <!-- Result Area -->
@@ -258,28 +235,45 @@ function addEQButton() {
       </div>
     `;
 
-    document.body.appendChild(panel);
+    document.body.appendChild(panelEl);
 
-    // 调整面板位置避免超出屏幕
+    (function makeDraggable(el) {
+      let isDragging = false;
+      let offsetX = 0, offsetY = 0;
+      el.addEventListener("mousedown", (e) => {
+        if (e.target.closest("textarea") || e.target.closest("input")) return;
+        isDragging = true;
+        offsetX = e.clientX - el.getBoundingClientRect().left;
+        offsetY = e.clientY - el.getBoundingClientRect().top;
+        el.style.transition = "none";
+      });
+      document.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        el.style.left = e.clientX - offsetX + "px";
+        el.style.top = e.clientY - offsetY + "px";
+        el.style.bottom = "auto";
+        el.style.right = "auto";
+      });
+      document.addEventListener("mouseup", () => {
+        isDragging = false;
+        el.style.transition = "";
+      });
+    })(panelEl);
+
     const adjustPanelPosition = () => {
-      const panelRect = panel.getBoundingClientRect();
+      const panelRect = panelEl.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
-      
       if (panelRect.bottom > viewportHeight) {
-        panel.style.bottom = "20px";
-        panel.style.top = "auto";
+        panelEl.style.bottom = "20px";
+        panelEl.style.top = "auto";
       }
-      
       if (panelRect.top < 0) {
-        panel.style.top = "20px";
-        panel.style.bottom = "auto";
+        panelEl.style.top = "20px";
+        panelEl.style.bottom = "auto";
       }
     };
-
-    // 初始位置调整
     setTimeout(adjustPanelPosition, 50);
 
-    // Event Listeners
     document.getElementById("libretalk-submit").addEventListener("click", () => {
       const relation = document.getElementById("libretalk-relation").value;
       const style = document.getElementById("libretalk-style").value;
@@ -292,7 +286,6 @@ function addEQButton() {
         return;
       }
 
-      // Show loading state
       const submitBtn = document.getElementById("libretalk-submit");
       const originalText = submitBtn.innerHTML;
       submitBtn.innerHTML = "Generating...";
@@ -307,7 +300,6 @@ function addEQButton() {
           submitBtn.disabled = false;
           return;
         }
-        
         if (!data.baseUrl) {
           alert("Please set Base URL in extension popup first!");
           submitBtn.innerHTML = originalText;
@@ -317,53 +309,31 @@ function addEQButton() {
         }
 
         chrome.runtime.sendMessage(
-          {
-            action: "generateReply",
-            relation,
-            style,
-            intent,
-            input,
-            chatHistory: history
-          },
+          { action: "generateReply", relation, style, intent, input, chatHistory: history },
           (response) => {
-            // Reset button
             submitBtn.innerHTML = originalText;
             submitBtn.style.opacity = "1";
             submitBtn.disabled = false;
 
             const resultContainer = document.getElementById("libretalk-result-container");
             const result = document.getElementById("libretalk-result");
-            
+
             if (response && response.reply) {
               result.textContent = response.reply;
               resultContainer.style.display = "block";
-              
-              // 添加复制按钮事件监听器
               const copyBtn = document.getElementById("libretalk-copy");
               copyBtn.addEventListener("click", () => {
                 navigator.clipboard.writeText(response.reply).then(() => {
                   const originalText = copyBtn.innerHTML;
                   copyBtn.innerHTML = "✅ Copied!";
-                  setTimeout(() => {
-                    copyBtn.innerHTML = originalText;
-                  }, 2000);
-                }).catch(err => {
-                  alert("Copy failed: " + err);
-                });
+                  setTimeout(() => { copyBtn.innerHTML = originalText; }, 2000);
+                }).catch(err => alert("Copy failed: " + err));
               });
-              
-              // 确保结果可见 - 滚动面板而不是页面
-              setTimeout(() => {
-                panel.scrollTop = panel.scrollHeight;
-                adjustPanelPosition(); // 重新调整位置
-              }, 100);
+              setTimeout(() => { panelEl.scrollTop = panelEl.scrollHeight; adjustPanelPosition(); }, 100);
             } else {
               result.textContent = "No response received. Please check your settings.";
               resultContainer.style.display = "block";
-              setTimeout(() => {
-                panel.scrollTop = panel.scrollHeight;
-                adjustPanelPosition(); // 重新调整位置
-              }, 100);
+              setTimeout(() => { panelEl.scrollTop = panelEl.scrollHeight; adjustPanelPosition(); }, 100);
             }
           }
         );
@@ -371,10 +341,7 @@ function addEQButton() {
     });
 
     document.getElementById("libretalk-close").addEventListener("click", () => {
-      panel.style.animation = "slideDown 0.2s ease-in-out";
-      setTimeout(() => {
-        panel.style.display = "none";
-      }, 200);
+      panelEl.style.display = "none";
     });
 
     document.getElementById("libretalk-clear").addEventListener("click", () => {
@@ -385,12 +352,9 @@ function addEQButton() {
       document.getElementById("libretalk-input").value = "";
       document.getElementById("libretalk-result").textContent = "";
       document.getElementById("libretalk-result-container").style.display = "none";
-      
-      // 清空后滚动到顶部
-      panel.scrollTop = 0;
+      panelEl.scrollTop = 0;
     });
 
-    // Add slide down animation
     const slideDownStyle = document.createElement("style");
     slideDownStyle.textContent = `
       @keyframes slideDown {
@@ -402,6 +366,32 @@ function addEQButton() {
   });
 
   document.body.appendChild(btn);
+
+  (function makeDraggable(el) {
+    let isDragging = false;
+    let offsetX = 0, offsetY = 0;
+
+    el.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      offsetX = e.clientX - el.getBoundingClientRect().left;
+      offsetY = e.clientY - el.getBoundingClientRect().top;
+      el.style.transition = "none";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      el.style.left = e.clientX - offsetX + "px";
+      el.style.top = e.clientY - offsetY + "px";
+      el.style.bottom = "auto";
+      el.style.right = "auto";
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      el.style.transition = "";
+    });
+  })(btn);
+
 }
 
 if (document.readyState === "loading") {
