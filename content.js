@@ -37,18 +37,26 @@ function addEQButton() {
   });
 
   btn.addEventListener("click", () => {
-    if (document.getElementById("libretalk-panel")) {
-      document.getElementById("libretalk-panel").style.display = "block";
+    const panel = document.getElementById("libretalk-panel");
+    if (panel) {
+      panel.style.display = panel.style.display === "none" ? "block" : "none";
       return;
     }
 
-    const panel = document.createElement("div");
-    panel.id = "libretalk-panel";
-    panel.style.cssText = `
-      position: fixed; bottom: 110px; right: 30px; width: 420px; max-height: 80vh;
-      background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1); z-index: 10000;
+    const panelEl = document.createElement("div");
+    panelEl.id = "libretalk-panel";
+    panelEl.style.cssText = `
+      position: fixed;
+      bottom: 110px;
+      right: 30px;
+      width: 400px;
+      max-height: 80vh;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      z-index: 10000;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       overflow-y: auto; animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     `;
@@ -68,17 +76,88 @@ function addEQButton() {
         outline: none; border-color: #667eea;
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
       }
-      .modern-btn { padding: 10px 16px; border: none; border-radius: 10px;
-        font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s ease;
+      .modern-input-area {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: white;
+        box-sizing: border-box;
+        font-family: inherit;
+        resize: vertical;
+        min-height: 45px;
+        max-height: 120px;
+        overflow-y: auto;
       }
-      .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-      .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3); }
-      .btn-secondary { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
-      .btn-secondary:hover { background: #e2e8f0; transform: translateY(-1px); }
+      .modern-input-area:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+      .modern-textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: white;
+        resize: vertical;
+        min-height: 80px;
+        box-sizing: border-box;
+        font-family: inherit;
+      }
+      .modern-textarea:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+      .modern-btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-family: inherit;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+      }
+      .btn-secondary {
+        background: #f1f5f9;
+        color: #64748b;
+        border: 1px solid #e2e8f0;
+      }
+      .btn-secondary:hover {
+        background: #e2e8f0;
+        transform: translateY(-1px);
+      }
+      .btn-danger {
+        background: #fee2e2;
+        color: #dc2626;
+        border: 1px solid #fecaca;
+      }
+      .btn-danger:hover {
+        background: #fecaca;
+        transform: translateY(-1px);
+      }
+      #libretalk-panel::-webkit-scrollbar { width: 6px; }
+      #libretalk-panel::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 3px; }
+      #libretalk-panel::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+      #libretalk-panel::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     `;
     document.head.appendChild(style);
 
-    panel.innerHTML = `
+    panelEl.innerHTML = `
       <div style="padding: 24px;">
         <h3 style="margin: 0 0 12px; font-size: 18px;">LibreTalk</h3>
 
@@ -98,23 +177,34 @@ function addEQButton() {
           <label for="libretalk-ocr" class="modern-btn btn-secondary">📂 Select File</label>
         </div>
 
-        <label>✍️ Add to Chat History</label>
-        <textarea id="libretalk-message" class="modern-input-area" placeholder="Type or paste a message..."></textarea>
-        <div style="margin-top:8px; display:flex; gap:8px;">
-          <select id="libretalk-role" class="modern-input" style="flex:1;">
-            <option value="their">Their Message</option>
-            <option value="me" selected>My Message</option>
-          </select>
-          <button id="libretalk-add-msg" class="modern-btn btn-primary" style="flex:1;">➕ Add</button>
+        <!-- Form Fields -->
+        <div style="display: grid; gap: 16px;">
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">👤 Relationship</label>
+            <input type="text" id="libretalk-relation" class="modern-input" placeholder="Friend, colleague, family...">
+          </div>
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">✨ Style</label>
+            <input type="text" id="libretalk-style" class="modern-input" placeholder="Casual, formal, friendly...">
+          </div>
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">🎯 Your Intent</label>
+            <textarea id="libretalk-intent" class="modern-input-area" placeholder="What do you want to express?"></textarea>
+          </div>
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">📜 Chat History (Optional)</label>
+            <textarea id="libretalk-history" class="modern-textarea" placeholder="Previous conversation context..."></textarea>
+          </div>
+          <div>
+            <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">💬 Last Message</label>
+            <textarea id="libretalk-input" class="modern-input-area" placeholder="What did they say?"></textarea>
+          </div>
         </div>
 
-        <label>💬 Last Message</label>
-        <textarea id="libretalk-input" class="modern-input-area" placeholder="What did they say?"></textarea>
-
-        <div style="display:flex; gap:12px; margin-top:16px;">
-          <button id="libretalk-submit" class="modern-btn btn-primary" style="flex:1;">Generate Reply</button>
-          <button id="libretalk-clear" class="modern-btn btn-secondary">Clear</button>
-          <button id="libretalk-close" class="modern-btn btn-secondary">Close</button>
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 12px; margin-top: 20px;">
+          <button id="libretalk-submit" class="modern-btn btn-primary" style="flex: 1;">Generate Reply</button>
+          <button id="libretalk-clear" class="modern-btn btn-secondary" style="flex: 0 0 auto;">Clear</button>
         </div>
 
         <div id="libretalk-result-container" style="margin-top:20px; display:none;">
@@ -124,35 +214,45 @@ function addEQButton() {
       </div>
     `;
 
-    document.body.appendChild(panel);
+    document.body.appendChild(panelEl);
 
-    // === 文件上传处理 ===
-    document.getElementById("libretalk-ocr").addEventListener("change", (e) => {
-      if (e.target.files[0]) handleImage(e.target.files[0]);
-    });
+    (function makeDraggable(el) {
+      let isDragging = false;
+      let offsetX = 0, offsetY = 0;
+      el.addEventListener("mousedown", (e) => {
+        if (e.target.closest("textarea") || e.target.closest("input")) return;
+        isDragging = true;
+        offsetX = e.clientX - el.getBoundingClientRect().left;
+        offsetY = e.clientY - el.getBoundingClientRect().top;
+        el.style.transition = "none";
+      });
+      document.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        el.style.left = e.clientX - offsetX + "px";
+        el.style.top = e.clientY - offsetY + "px";
+        el.style.bottom = "auto";
+        el.style.right = "auto";
+      });
+      document.addEventListener("mouseup", () => {
+        isDragging = false;
+        el.style.transition = "";
+      });
+    })(panelEl);
 
-    // === 粘贴图片处理 ===
-    document.getElementById("libretalk-message").addEventListener("paste", (e) => {
-      const items = e.clipboardData.items;
-      for (const item of items) {
-        if (item.type.indexOf("image") !== -1) {
-          handleImage(item.getAsFile());
-        }
+    const adjustPanelPosition = () => {
+      const panelRect = panelEl.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      if (panelRect.bottom > viewportHeight) {
+        panelEl.style.bottom = "20px";
+        panelEl.style.top = "auto";
       }
-    });
-
-    // === 添加消息到 Chat History ===
-    document.getElementById("libretalk-add-msg").addEventListener("click", () => {
-      const val = document.getElementById("libretalk-message").value.trim();
-      const role = document.getElementById("libretalk-role").value;
-      if (val) {
-        const history = document.getElementById("libretalk-history");
-        history.value += `\n${role === "their" ? "[Them]: " : "[Me]: "}${val}`;
-        document.getElementById("libretalk-message").value = "";
+      if (panelRect.top < 0) {
+        panelEl.style.top = "20px";
+        panelEl.style.bottom = "auto";
       }
-    });
+    };
+    setTimeout(adjustPanelPosition, 50);
 
-    // === 生成回复 ===
     document.getElementById("libretalk-submit").addEventListener("click", () => {
       const relation = document.getElementById("libretalk-relation").value;
       const style = document.getElementById("libretalk-style").value;
@@ -175,40 +275,104 @@ function addEQButton() {
         (response) => {
           submitBtn.innerHTML = originalText;
           submitBtn.disabled = false;
-          const resultContainer = document.getElementById("libretalk-result-container");
-          const result = document.getElementById("libretalk-result");
-          if (response && response.reply) {
-            result.textContent = response.reply;
-          } else {
-            result.textContent = "No response.";
-          }
-          resultContainer.style.display = "block";
+          return;
+        }
+        if (!data.baseUrl) {
+          alert("Please set Base URL in extension popup first!");
+          submitBtn.innerHTML = originalText;
+          submitBtn.style.opacity = "1";
+          submitBtn.disabled = false;
+          return;
         }
       );
     });
 
-    document.getElementById("libretalk-clear").addEventListener("click", () => {
-      ["relation","style","intent","history","input","message"].forEach(id=>{
-        const el = document.getElementById("libretalk-" + id);
-        if (el) el.value = "";
+        chrome.runtime.sendMessage(
+          { action: "generateReply", relation, style, intent, input, chatHistory: history },
+          (response) => {
+            submitBtn.innerHTML = originalText;
+            submitBtn.style.opacity = "1";
+            submitBtn.disabled = false;
+
+            const resultContainer = document.getElementById("libretalk-result-container");
+            const result = document.getElementById("libretalk-result");
+
+            if (response && response.reply) {
+              result.textContent = response.reply;
+              resultContainer.style.display = "block";
+              const copyBtn = document.getElementById("libretalk-copy");
+              copyBtn.addEventListener("click", () => {
+                navigator.clipboard.writeText(response.reply).then(() => {
+                  const originalText = copyBtn.innerHTML;
+                  copyBtn.innerHTML = "✅ Copied!";
+                  setTimeout(() => { copyBtn.innerHTML = originalText; }, 2000);
+                }).catch(err => alert("Copy failed: " + err));
+              });
+              setTimeout(() => { panelEl.scrollTop = panelEl.scrollHeight; adjustPanelPosition(); }, 100);
+            } else {
+              result.textContent = "No response received. Please check your settings.";
+              resultContainer.style.display = "block";
+              setTimeout(() => { panelEl.scrollTop = panelEl.scrollHeight; adjustPanelPosition(); }, 100);
+            }
+          }
+        );
       });
       document.getElementById("libretalk-result").textContent = "";
       document.getElementById("libretalk-result-container").style.display = "none";
     });
 
     document.getElementById("libretalk-close").addEventListener("click", () => {
-      panel.style.display = "none";
+      panelEl.style.display = "none";
     });
 
-    document.getElementById("libretalk-copy").addEventListener("click", () => {
-      const text = document.getElementById("libretalk-result").textContent;
-      navigator.clipboard.writeText(text).then(() => {
-        alert("Copied!");
-      });
+    document.getElementById("libretalk-clear").addEventListener("click", () => {
+      document.getElementById("libretalk-relation").value = "";
+      document.getElementById("libretalk-style").value = "";
+      document.getElementById("libretalk-intent").value = "";
+      document.getElementById("libretalk-history").value = "";
+      document.getElementById("libretalk-input").value = "";
+      document.getElementById("libretalk-result").textContent = "";
+      document.getElementById("libretalk-result-container").style.display = "none";
+      panelEl.scrollTop = 0;
     });
+
+    const slideDownStyle = document.createElement("style");
+    slideDownStyle.textContent = `
+      @keyframes slideDown {
+        from { opacity: 1; transform: translateY(0) scale(1); }
+        to { opacity: 0; transform: translateY(20px) scale(0.95); }
+      }
+    `;
+    document.head.appendChild(slideDownStyle);
   });
 
   document.body.appendChild(btn);
+
+  (function makeDraggable(el) {
+    let isDragging = false;
+    let offsetX = 0, offsetY = 0;
+
+    el.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      offsetX = e.clientX - el.getBoundingClientRect().left;
+      offsetY = e.clientY - el.getBoundingClientRect().top;
+      el.style.transition = "none";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      el.style.left = e.clientX - offsetX + "px";
+      el.style.top = e.clientY - offsetY + "px";
+      el.style.bottom = "auto";
+      el.style.right = "auto";
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      el.style.transition = "";
+    });
+  })(btn);
+
 }
 
 // === 图片处理函数 ===
